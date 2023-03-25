@@ -4,6 +4,10 @@ const express = require("express");
 // Create express app
 var app = express();
 
+// Use the Pug templating engine
+app.set('view engine', 'pug');
+app.set('views', './app/views');
+
 // Add static files location
 app.use(express.static("static"));
 
@@ -12,8 +16,25 @@ const db = require('./services/db');
 
 // Create a route for root - /
 app.get("/", function(req, res) {
-    res.send("Hello world!");
+    res.render("index");
 });
+
+app.get("/signup-page", function(req, res) {
+    res.render("signup");
+});
+
+app.get("/login-page", function(req, res) {
+    res.render("loginpage");
+});
+
+app.get("/courses", function(req, res) {
+    sql = 'select * from course';
+    db.query(sql).then(results => {
+        console.log(results);
+        res.render("courses", { courses: results });
+    });
+});
+
 
 // Create a route for testing the db
 app.get("/db_test", function(req, res) {
@@ -43,6 +64,6 @@ app.get("/hello/:name", function(req, res) {
 });
 
 // Start server on port 3000
-app.listen(3000,function(){
+app.listen(3000, function() {
     console.log(`Server running at http://127.0.0.1:3000/`);
 });
