@@ -25,3 +25,16 @@ block content
         a(href="#") Photography
       li
         a(href="#") Design
+  
+
+      div.container(style="margin-top: 50px; margin-bottom: 50px;")
+        div.row(style="display: flex;")
+          each course in courses
+            div.col-sm-3(style="margin: 10px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 5px; padding: 20px;")
+              img(src="https://img.freepik.com/free-vector/digital-coding-background-with-numbers-zero-one_1017-30363.jpg?w=1060&t=st=1679697318~exp=1679697918~hmac=b073e849491d1c84305af9d2617012657f084678191437396e715634bb5b5ce8", style="with:220px; height: 150px;")
+              div.details
+                h2(style="margin-top: 0; margin-bottom: 10px; font-size: 24px;") #{course.name}
+                p(style="margin-bottom: 10px; color: #666;") #{course.description}
+                span.price(style="font-size: 20px; font-weight: bold; color: #0073b1;") #{course.type}
+                a(href="/courses/1", style="display: block; margin-top: 10px; background-color: #0073b1; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; text-align: center; cursor: pointer; font-size: 16px; text-decoration: none;") Learn More
+        

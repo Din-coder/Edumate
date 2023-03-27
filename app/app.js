@@ -16,7 +16,11 @@ const db = require('./services/db');
 
 // Create a route for root - /
 app.get("/", function(req, res) {
-    res.render("index");
+    sql = 'select * from course';
+    db.query(sql).then(results => {
+        console.log(results);
+        res.render("index", { courses: results });
+    });
 });
 
 app.get("/signup-page", function(req, res) {
