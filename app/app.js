@@ -106,6 +106,83 @@ app.get("/home", requireLogin, function(req, res) {
 /* Arun Mohan ENDS */
 
 
+/* Dinso Joseph Manavalan */
+
+// Login required
+const requireLogin = (req, res, next) => {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    next();
+};
+
+app.get("/loginerror", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    res.render("error", { user: req.session.user });
+});
+
+app.get("/error", function(req, res) {
+    res.render("error");
+});
+
+app.get("/signup-page", function(req, res) {
+    res.render("signup");
+});
+
+app.post('/signup', async(req, res) => {
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Save user data to the database
+    db.query('INSERT INTO profile (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword], (err, result) => {
+        if (err) {
+            return res.redirect('/signup-page');
+        }
+        res.redirect('/login-page');
+    });
+});
+
+app.get("/login-page", function(req, res) {
+    res.render("loginpage");
+});
+
+app.post('/login', async(req, res) => {
+    try {
+        const { username, password } = req.body;
+        const results = await db.query("SELECT * FROM profile WHERE username = ?", [username]);
+
+        if (results.length > 0 && bcrypt.compareSync(password, results[0]["password"])) {
+            req.session.user = {
+                id: results[0].id,
+                username: results[0].username,
+                email: results[0].email,
+                firstname: results[0].firstname,
+                lastname: results[0].lastname,
+                age: results[0].age,
+                occupation: results[0].occupation,
+                joined_date: results[0].joined_date,
+
+            };
+
+            const courses = await db.query("SELECT * FROM course");
+            const categories = await db.query("SELECT * FROM category");
+            res.render('home', { user: req.session.user, courses, categories, message: "Logged In successfully" });
+        } else {
+            res.redirect("/login-page");
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect("/login-page");
+    }
+});
+
+app.get('/logout', function(req, res) {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+/* Dinso Joseph Manavalan ENDS */
 
 
 
