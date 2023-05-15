@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .container
+    .profile-header
+      img.profile-image(src="images/profile.png" alt="Profile Image")
+      h2 #{user.username}
+      p.joined-on Joined on: #{user.joined_date}
+    .profile-body
+      h3 Profile Information
+      table
+        tr
+          th Name
+          td #{user.firstname} #{user.lastname}
+        tr
+          th Email
+          td #{user.email}
+        tr
+          th Age
+          td #{user.age}
+        tr
+          th Occupation
+          td #{user.occupation}
+      button.edit-profile-btn(type="button")
+        a(href=`/edit-profile/${user.id}`) Edit Profile
