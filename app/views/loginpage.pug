@@ -1,0 +1,15 @@
+extends layout 
+block content
+    .container
+        h2 Log In
+        form(action="/login" method="POST")
+            .form-group
+                label(for="username") Username or Email
+                input(type="text" id="username" name="username" required)
+            .form-group
+                label(for="password") Password
+                input(type="password" id="password" name="password" required)
+            .form-group
+                button.btn(type="submit") Log In
+        p Not registered yet? 
+        a(href="/signup-page") Create an account
