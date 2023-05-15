@@ -2,26 +2,33 @@ extends layout
 block content   
   section.hero
     div.message-container
-      h2 Welcome to EduMate
+      h2 Welcome #{user.username}
       p Ultimate Destination for Online Education
       p Join us on this journey of discovery and growth, and let Edumate help you unlock your full potential.
   section.course
     h3 Popular Courses
     div.container 
-      each course in courses
-        div.course-card
-          div.course-image
-            img(src="images/indeximage.jpg")
-          div.course-content
-            h4.course-title #{course.name}
-            p.course-description #{course.description}
-            a.course-readmore(href="#") Read More
+      if courses && courses.length
+        each course in courses
+          div.course-card
+            div.course-image
+              img(src="images/indeximage.jpg")
+            div.course-content
+              h4.course-title #{course.name}
+              p.course-description #{course.description}
+              a.course-readmore(href="#") Read More
+      else
+        p No Courses Available
+      
   section.category 
     h3 Categories
     div.container
       ul.categories
-        each cat in categories
-            li #{cat.category}
+        if categories && categories.length
+          each cat in categories
+              li #{cat.category}
+        else 
+          li No Categories to display
   section.review
     h3 Reviews
     div.container

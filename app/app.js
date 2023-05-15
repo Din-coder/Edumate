@@ -83,6 +83,27 @@ app.post('/send-email', (req, res) => {
 
 /* Rahul Raju ENDS */
 
+/* Arun Mohan */
+
+// Create a route for root - /
+app.get("/", function(req, res) {
+    sql = 'select * from course';
+    sqlcat = 'select * from category';
+    db.query(sql).then(results => {
+        db.query(sqlcat).then(resultscat => {
+            res.render("index", { courses: results, categories: resultscat });
+        });
+    });
+});
+
+app.get("/home", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    res.render("home", { user: req.session.user });
+});
+
+/* Arun Mohan ENDS */
 
 
 
