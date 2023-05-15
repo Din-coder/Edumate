@@ -185,6 +185,51 @@ app.get('/logout', function(req, res) {
 /* Dinso Joseph Manavalan ENDS */
 
 
+/* Dilsha Benny */
+
+app.get("/profile", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    res.render("profile", { user: req.session.user });
+});
+
+app.get('/edit-profile/:id', requireLogin, (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    res.render('editprofile', { user: req.session.user });
+});
+
+app.post('/update-profile/:id', requireLogin, async(req, res) => {
+    try {
+        const saltRounds = 10;
+        const userid = req.session.user.id;
+        const { username, password, firstname, lastname, age, occupation, email } = req.body;
+        if (password == "") {
+            await db.query("UPDATE profile SET username = ?, firstname = ?, lastname = ?, age = ?, occupation = ?, email = ? WHERE id = ?", [username, firstname, lastname, age, occupation, email, userid]);
+        } else {
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            await db.query("UPDATE profile SET username = ?, password = ?, firstname = ?, lastname = ?, age = ?, occupation = ?, email = ? WHERE id = ?", [username, hashedPassword, firstname, lastname, age, occupation, email, userid]);
+        }
+        const updatedUser = await db.query("SELECT * FROM profile WHERE id = ?", [userid]);
+        req.session.user = {
+            id: updatedUser[0].id,
+            username: updatedUser[0].username,
+            email: updatedUser[0].email,
+            firstname: updatedUser[0].firstname,
+            lastname: updatedUser[0].lastname,
+            age: updatedUser[0].age,
+            occupation: updatedUser[0].occupation
+        };
+        res.redirect('/profile');
+    } catch (error) {
+        console.log(error);
+        res.redirect(`/edit-profile/${req.session.user.id}`);
+    }
+});
+
+/* Dilsha Benny ENDS */
 
 
 
