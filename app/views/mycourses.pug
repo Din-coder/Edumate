@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    section.course
+        h3 My Learning
+        div.coursecontainer
+            each course in courses
+                div.course-card
+                    div.course-image
+                        img(src="images/indeximage.jpg")
+                    div.course-content
+                        h4.course-title #{course.name}
+                        p.course-description #{course.description}
+                        a.course-readmore(href="#") Read More
+                        a.course-start(href="#") Start course
