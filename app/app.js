@@ -232,21 +232,73 @@ app.post('/update-profile/:id', requireLogin, async(req, res) => {
 /* Dilsha Benny ENDS */
 
 
+/* Kinal Hirpara */
 
+app.get("/about", function(req, res) {
+    res.render("about");
+});
 
+app.get("/aboutlogin", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    res.render("about", { user: req.session.user });
+});
 
+app.get("/courses", function(req, res) {
+    sql = 'select * from course';
+    db.query(sql).then(results => {
+        console.log(results);
+        res.render("courses", { courses: results });
+    });
+});
 
+app.get("/courseslogin", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    sql = 'select * from course';
+    db.query(sql).then(results => {
+        res.render("courses", { courses: results, user: req.session.user });
+    });
+});
 
+app.get("/mycourses", requireLogin, function(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login-page');
+    }
+    const sql = 'select * from my_course where profile_id = ?';
+    const valu = [req.session.user.id];
 
+    db.query(sql, valu).then(results => {
+        const course_id_list = [];
+        for (let i = 0; i < results.length; i++) {
+            course_id_list.push(results[i]["course_id"]);
+        }
 
+        const coursePromises = course_id_list.map(course_id => {
+            const csql = 'select * from course where id = ?';
+            const cvalu = [course_id];
+            return db.query(csql, cvalu);
+        });
+        Promise.all(coursePromises).then(course => {
+            const coursess = [];
+            for (let i = 0; i < course.length; i++) {
+                coursess.push(course[i][0]);
+            }
+            console.log(coursess);
+            res.render("mycourses", { courses: coursess, user: req.session.user });
+        }).catch(error => {
+            console.error(error);
+            res.redirect("/loginerror"); // Render an error page if there's an issue with fetching courses
+        });
+    }).catch(error => {
+        console.error(error);
+        res.redirect("/loginerror"); // Render an error page if there's an issue with fetching the initial results
+    });
+});
 
-
-
-
-
-
-
-
+/* Kinal Hirpara ENDS */
 
 
 // Start server on port 3000
