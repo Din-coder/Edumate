@@ -1,133 +1,57 @@
-doctype html
-html(lang="en")
+html
   head
     meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title EduMate
-    style.
-      * {
-        font-family: sans-serif;
-        margin:0;
-        border:0;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: #212F3C;
-        color: #FFFFFF;
-      }
-      nav ul {
-        list-style: none;
-        display: flex;
-      }
-      nav ul li a {
-        color: #FFFFFF;
-        text-decoration: none;
-        margin-left: 20px;
-        font-weight: bold;
-      }
-      nav ul li a:hover {
-        color: #F04848;
-      }
-      .hero {
-        background-image: url("https://img.freepik.com/free-photo/education-concept-student-studying-brainstorming-campus-concept-close-up-students-discussing-their-subject-books-textbooks-selective-focus_1418-627.jpg?w=996&t=st=1679689085~exp=1679689685~hmac=e3cca6d7d6a130e142f48d55f445c084352c87eb29ca74c65e379cb18c2cab2f");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding: 100px;
-        text-align: center;
-        color: #FFFFFF;
-      }
-      .hero h1 {
-        font-size: 48px;
-        margin-bottom: 30px;
-      }
-      .hero p {
-        font-size: 20px;
-        margin-bottom: 40px;
-      }
-      .hero input[type="text"] {
-        width: 60%;
-        padding: 10px;
-        margin-right: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        outline: none;
-      }
-      .hero button[type="submit"] {
-        background-color: #F04848;
-        color: #FFFFFF;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      .categories {
-        padding: 50px;
-        background-color: #FFFFFF;
-        text-align: center;
-      }
-      .categories h2 {
-        font-size: 36px;
-        margin-bottom: 30px;
-      }
-      .categories ul {
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-      }
-      .categories li {
-        margin: 10px;
-      }
-      .categories li a {
-        text-decoration: none;
-        color: #1A2238;
-        font-weight: bold;
-        border: 2px solid #1A2238;
-        border-radius: 5px;
-        padding: 10px 20px;
-        transition: all 0.3s ease-in-out;
-      }
-      .categories li a:hover {
-        background-color: #1A2238;
-        color: #FFFFFF;
-      }
-      footer {
-        background-color: #1A2238;
-        color: #FFFFFF;
-        text-align: center;
-        padding: 20px;
-        font-size: 14px;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-      }
-      
-    link(rel="stylesheet", href="style.css")
+    link(rel='stylesheet', href='/css/layout.css')
+    link(rel='stylesheet', href='/css/login.css')
+    link(rel='stylesheet', href='/css/profile.css')
+    link(rel='stylesheet', href='/css/editprofile.css')
+    link(rel='stylesheet', href='/css/signup.css')
+    link(rel='stylesheet', href='/css/course.css')
   body
     header
-      nav
+      div.header-image
+        h1 
+          a(href='/') EduMate
+          p Welcome to the world of modern education
+    nav
+      div.container
         ul
-          li
-            a(href="/", style="font-size: 25px; text-color: red;") EduMate
-          li
-            a(href="#", style="font-weight: lighter;") Categories
-          li
-            a(href="/courses", style="font-weight: lighter;") Courses
-          li
-            a(href="/login-page", style="font-weight: lighter;") Login
-          li
-            a(href="/signup-page", style="font-weight: lighter;") Sign Up
-    main
-        block content
-    
-
+          if user
+            li
+              a(href='/home') Home
+            li 
+              a(href='/mycourses') My Learning
+            li
+              a(href='/courseslogin') Courses
+            li
+              a(href='/profile/#{user.id}') Profile
+            li
+              a(href='/aboutlogin') About Us
+            li
+              a(href='/contactlogin') Contact Us
+            li
+              a(href='/logout') Logout
+          else 
+            li 
+              a(href='/') Home
+            li
+              a(href='/courses') Courses
+            li
+              a(href='/about') About Us
+            li
+              a(href='/contact') Contact Us
+            li
+              a(href='/signup-page') SignUp
+            li
+              a(href='/login-page') LogIn
+    main  
+      if message
+        .alert-box
+          p= message
+      block content
     footer
-        p Copyright © 2023 EduMate, Inc.
+      div.container
+        p Copyright © 2023 EduMate
+
